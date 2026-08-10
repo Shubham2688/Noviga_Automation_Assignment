@@ -17,6 +17,7 @@ import {
 } from '../utils/chartData'
 import { buildHourlyTable } from '../utils/hourlyTable'
 import { resetZoom, setZoomRange } from '../store/dashboardFiltersSlice'
+import { formatApiError } from '../utils/apiError'
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch()
@@ -73,7 +74,6 @@ export default function DashboardPage() {
 
   const isLoading = intervalsLoading || cycleLoading
   const isFetching = intervalsFetching || cycleFetching
-  const error = intervalsError || cycleError
 
   const viewStartMs = filters.zoomRange?.startMs ?? shiftWindow?.fromMs ?? 0
   const viewEndMs = filters.zoomRange?.endMs ?? shiftWindow?.toMs ?? 0
@@ -110,12 +110,21 @@ export default function DashboardPage() {
     refetchCycle()
   }
 
-  const errorMessage =
-    error && 'data' in error
-      ? String(error.data)
-      : error && 'status' in error && Number(error.status) === 403
-        ? 'Access denied.'
-        : 'Failed to load dashboard data.'
+  const errorMessage = useMemo(() => {
+    if (intervalsError) {
+      return formatApiError(
+        intervalsError,
+        'We could not load the production timeline. Please try again.',
+      )
+    }
+    if (cycleError) {
+      return formatApiError(
+        cycleError,
+        'We could not load cycle time details. Please try again.',
+      )
+    }
+    return null
+  }, [intervalsError, cycleError])
 
   return (
     <AppShell>
@@ -128,7 +137,7 @@ export default function DashboardPage() {
         </Box>
       )}
 
-      {error && !isLoading && (
+      {errorMessage && !isLoading && (
         <Alert
           severity="error"
           action={
@@ -142,13 +151,13 @@ export default function DashboardPage() {
         </Alert>
       )}
 
-      {!isLoading && !error && isEmpty && (
+      {!isLoading && !errorMessage && isEmpty && (
         <Box textAlign="center" py={6}>
           <Typography color="text.secondary">No data for this shift.</Typography>
         </Box>
       )}
 
-      {!isLoading && !error && intervals && shiftWindow && !isEmpty && (
+      {!isLoading && !errorMessage && intervals && shiftWindow && !isEmpty && (
         <>
           {isFetching && (
             <Typography variant="caption" color="text.secondary" display="block" mb={1}>

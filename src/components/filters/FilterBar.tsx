@@ -21,13 +21,14 @@ import {
   pickDefaultShift,
 } from '../../utils/shiftWindow'
 import { useGetAssetsTreeQuery, useGetShiftsQuery, baseApi } from '../../store/api/baseApi'
+import { formatApiError } from '../../utils/apiError'
 
 export default function FilterBar() {
   const dispatch = useAppDispatch()
   const filters = useAppSelector((s) => s.dashboardFilters)
 
-  const { data: assetsTree } = useGetAssetsTreeQuery()
-  const { data: shiftsData } = useGetShiftsQuery()
+  const { data: assetsTree, error: assetsError } = useGetAssetsTreeQuery()
+  const { data: shiftsData, error: shiftsError } = useGetShiftsQuery()
 
   const flatAssets = assetsTree ? flattenAssetTree(assetsTree) : []
   const parsedShifts = shiftsData ? parseShifts(shiftsData) : []
@@ -149,6 +150,20 @@ export default function FilterBar() {
           </Typography>
         )}
       </Box>
+
+      {(assetsError || shiftsError) && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {assetsError
+            ? formatApiError(
+                assetsError,
+                'We could not load the machine list. Please refresh the page.',
+              )
+            : formatApiError(
+                shiftsError,
+                'We could not load shift options. Please refresh the page.',
+              )}
+        </Alert>
+      )}
 
       {shiftWindow && (
         <Alert severity="info" sx={{ mb: 2, py: 0.5 }} icon={false}>

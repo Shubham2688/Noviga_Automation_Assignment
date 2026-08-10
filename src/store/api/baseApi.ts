@@ -19,6 +19,7 @@ import type {
 import { clearAuth } from '../authSlice'
 import type { RootState } from '../store'
 import { getBaseUrl } from '../../api/client'
+import { extractApiErrorMessage, getDefaultMessageForStatus, normalizeFetchError } from '../../utils/apiError'
 
 interface MesWrapper<T> {
   trace_id: string
@@ -62,7 +63,7 @@ const baseQueryWithEnvelope: BaseQueryFn<
         api.dispatch(clearAuth())
       }
     }
-    return lastResult
+    return { error: normalizeFetchError(lastResult.error) }
   }
 
   const envelope = lastResult.data as MesWrapper<unknown>
@@ -73,10 +74,13 @@ const baseQueryWithEnvelope: BaseQueryFn<
         api.dispatch(clearAuth())
       }
     }
+    const message =
+      extractApiErrorMessage(envelope) ??
+      getDefaultMessageForStatus(envelope.status_code)
     return {
       error: {
         status: envelope.status_code,
-        data: envelope.message,
+        data: message,
       } as FetchBaseQueryError,
     }
   }

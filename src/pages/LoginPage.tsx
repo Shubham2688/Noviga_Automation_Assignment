@@ -13,6 +13,7 @@ import {
 import { useLoginMutation } from '../store/api/baseApi'
 import { useAppDispatch } from '../store/hooks'
 import { setToken } from '../store/authSlice'
+import { formatApiError } from '../utils/apiError'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -42,12 +43,10 @@ export default function LoginPage() {
 
   const apiError =
     error && 'status' in error && error.status === 401
-      ? 'Invalid credentials. Please try again.'
-      : error && 'data' in error
-        ? String(error.data)
-        : error
-          ? 'Login failed. Please try again.'
-          : null
+      ? 'Incorrect username or password. Please try again.'
+      : error
+        ? formatApiError(error, 'Sign in failed. Please try again.')
+        : null
 
   return (
     <Box
