@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timeline Dashboard — Project Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #1a1a2e;
+      line-height: 1.55;
+      background: #fff;
+      font-size: 11pt;
+    }
+
+    .page { padding: 0; page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+
+    /* Cover */
+    .cover {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #004d40 0%, #00897b 40%, #26a69a 100%);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 50px;
+    }
+    .cover h1 { font-size: 36pt; font-weight: 800; margin-bottom: 12px; letter-spacing: -1px; }
+    .cover .subtitle { font-size: 16pt; opacity: 0.9; margin-bottom: 40px; }
+    .cover .meta { font-size: 11pt; opacity: 0.75; line-height: 2; }
+    .cover .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 10pt;
+      margin-top: 30px;
+    }
+
+    /* Content pages */
+    .content { padding: 40px 45px; }
+    h2 {
+      font-size: 18pt;
+      color: #004d40;
+      border-bottom: 3px solid #00897b;
+      padding-bottom: 8px;
+      margin: 28px 0 16px;
+      page-break-after: avoid;
+    }
+    h2:first-child { margin-top: 0; }
+    h3 { font-size: 12pt; color: #00695c; margin: 18px 0 10px; page-break-after: avoid; }
+    p { margin-bottom: 10px; color: #333; }
+    ul, ol { margin: 8px 0 14px 22px; }
+    li { margin-bottom: 5px; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 14px;
+      background: #fafafa;
+      text-align: center;
+    }
+    .card strong { display: block; color: #004d40; font-size: 10pt; margin-bottom: 4px; }
+    .card span { font-size: 9pt; color: #666; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 9.5pt;
+    }
+    th {
+      background: #004d40;
+      color: white;
+      padding: 9px 10px;
+      text-align: left;
+      font-weight: 600;
+    }
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #f5f5f5; }
+
+    .diagram-box {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 16px 0;
+      page-break-inside: avoid;
+    }
+    .diagram-title {
+      font-weight: 700;
+      color: #004d40;
+      margin-bottom: 14px;
+      font-size: 10pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .legend-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9pt;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: white;
+      border: 1px solid #eee;
+    }
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .code-block {
+      background: #263238;
+      color: #eceff1;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-family: 'Consolas', monospace;
+      font-size: 8.5pt;
+      line-height: 1.6;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      page-break-inside: avoid;
+    }
+
+    .info-box {
+      background: #e0f2f1;
+      border-left: 4px solid #00897b;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      font-size: 10pt;
+    }
+    .warn-box {
+      background: #fff3e0;
+      border-left: 4px solid #ff9800;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      font-size: 10pt;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 6px 0;
+      font-size: 9.5pt;
+    }
+    .flow-num {
+      background: #00897b;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 9pt;
+      flex-shrink: 0;
+    }
+    .flow-arrow { text-align: center; color: #00897b; font-size: 16pt; margin: 2px 0 2px 7px; }
+
+    .footer-note {
+      margin-top: 30px;
+      padding-top: 14px;
+      border-top: 1px solid #eee;
+      font-size: 8.5pt;
+      color: #999;
+      text-align: center;
+    }
+
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<div class="page cover">
+  <h1>Timeline Dashboard</h1>
+  <div class="subtitle">Project Guide & Technical Documentation</div>
+  <div class="meta">
+    Noviga Frontend Assignment<br>
+    React 18 · TypeScript · MUI v6 · Redux Toolkit<br>
+    Backend: fractaldmsdev.centralindia.cloudapp.azure.com<br>
+    Valid data: 22–25 June 2026 · Timezone: IST (+05:30)
+  </div>
+  <div class="badge">Frontend Assignment Submission</div>
+</div>
+
+<!-- PAGE 2: OVERVIEW + TECH STACK -->
+<div class="page content">
+  <h2>1. Project Overview</h2>
+  <p>This application is a <strong>Production Timeline Dashboard</strong> that connects to a real manufacturing backend (MES). It provides two core features:</p>
+  <ol>
+    <li><strong>Authentication</strong> — Login, token session, protected routes</li>
+    <li><strong>Timeline Dashboard</strong> — Interactive chart + hourly summary table for one machine, one shift, one date</li>
+  </ol>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Application Architecture</div>
+    <svg viewBox="0 0 620 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="20" width="120" height="50" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+      <text x="70" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="#1565c0">Login Page</text>
+      <text x="70" y="58" text-anchor="middle" font-size="9" fill="#666">/login</text>
+
+      <rect x="170" y="20" width="140" height="50" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+      <text x="240" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="#2e7d32">Auth + Redux</text>
+      <text x="240" y="58" text-anchor="middle" font-size="9" fill="#666">token · session</text>
+
+      <rect x="350" y="20" width="130" height="50" rx="8" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/>
+      <text x="415" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="#ef6c00">Dashboard</text>
+      <text x="415" y="58" text-anchor="middle" font-size="9" fill="#666">/dashboard</text>
+
+      <rect x="520" y="20" width="90" height="50" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+      <text x="565" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="#c62828">RTK Query</text>
+      <text x="565" y="58" text-anchor="middle" font-size="9" fill="#666">7 APIs</text>
+
+      <line x1="130" y1="45" x2="170" y2="45" stroke="#999" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="310" y1="45" x2="350" y2="45" stroke="#999" stroke-width="1.5"/>
+      <line x1="480" y1="45" x2="520" y2="45" stroke="#999" stroke-width="1.5"/>
+
+      <rect x="60" y="100" width="500" height="80" rx="10" fill="#f5f5f5" stroke="#bdbdbd" stroke-width="1"/>
+      <text x="310" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#333">Dashboard Components</text>
+      <rect x="80" y="135" width="130" height="32" rx="6" fill="#00897b" opacity="0.85"/>
+      <text x="145" y="155" text-anchor="middle" font-size="10" fill="white" font-weight="600">Timeline Chart</text>
+      <rect x="230" y="135" width="130" height="32" rx="6" fill="#1565c0" opacity="0.85"/>
+      <text x="295" y="155" text-anchor="middle" font-size="10" fill="white" font-weight="600">Hourly Table</text>
+      <rect x="380" y="135" width="130" height="32" rx="6" fill="#6a1b9a" opacity="0.85"/>
+      <text x="445" y="155" text-anchor="middle" font-size="10" fill="white" font-weight="600">Filter Bar</text>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#999"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h2>2. Tech Stack</h2>
+  <div class="card-grid">
+    <div class="card"><strong>React 18</strong><span>UI Framework</span></div>
+    <div class="card"><strong>TypeScript</strong><span>Type Safety</span></div>
+    <div class="card"><strong>Vite</strong><span>Build Tool</span></div>
+    <div class="card"><strong>MUI v6</strong><span>UI Components</span></div>
+    <div class="card"><strong>Redux Toolkit</strong><span>Client State</span></div>
+    <div class="card"><strong>RTK Query</strong><span>API / Server State</span></div>
+    <div class="card"><strong>Luxon</strong><span>UTC ↔ IST</span></div>
+    <div class="card"><strong>Canvas</strong><span>Chart Rendering</span></div>
+    <div class="card"><strong>React Router</strong><span>Navigation</span></div>
+  </div>
+</div>
+
+<!-- PAGE 3: SHIFTS -->
+<div class="page content">
+  <h2>3. How Shifts Work</h2>
+  <div class="info-box">
+    <strong>Key rule:</strong> <code>shift_timings</code> is a list of <strong>shift START times</strong> in IST — not start/end pairs. Each entry starts a shift until the next entry. The last wraps to the first.
+  </div>
+
+  <h3>Backend Response Example</h3>
+  <div class="code-block">{
+  "name": "summer-shift",
+  "shift_timings": ["08:30", "19:00"]
+}</div>
+
+  <h3>Two Shifts Parsed from Above</h3>
+  <table>
+    <tr><th>Dropdown Label</th><th>IST Window (Date = 23 Jun)</th><th>UTC API Request</th></tr>
+    <tr>
+      <td><strong>summer-shift (08:30 – 19:00)</strong></td>
+      <td>23 Jun 08:30 → 23 Jun 19:00</td>
+      <td>03:00Z → 13:30Z</td>
+    </tr>
+    <tr>
+      <td><strong>summer-shift (19:00 – 08:30 next day)</strong></td>
+      <td>23 Jun 19:00 → 24 Jun 08:30</td>
+      <td>13:30Z → 03:00Z (+1 day)</td>
+    </tr>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Visual — Day Shift vs Night Shift (23 June 2026)</div>
+    <svg viewBox="0 0 620 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Day shift -->
+      <text x="10" y="18" font-size="10" font-weight="700" fill="#333">Day Shift (08:30 – 19:00)</text>
+      <rect x="10" y="25" width="600" height="28" rx="4" fill="#f5f5f5" stroke="#ddd"/>
+      <rect x="80" y="25" width="330" height="28" rx="4" fill="#00897b" opacity="0.85"/>
+      <text x="245" y="43" text-anchor="middle" font-size="9" fill="white" font-weight="600">RUNTIME / PRODUCTION</text>
+      <text x="15" y="43" font-size="8" fill="#666">08:30</text>
+      <text x="575" y="43" font-size="8" fill="#666">19:00</text>
+
+      <!-- Night shift -->
+      <text x="10" y="78" font-size="10" font-weight="700" fill="#333">Night Shift (19:00 – 08:30 next day)</text>
+      <rect x="10" y="85" width="600" height="28" rx="4" fill="#f5f5f5" stroke="#ddd"/>
+      <rect x="330" y="85" width="280" height="28" rx="4" fill="#00897b" opacity="0.85"/>
+      <text x="470" y="103" text-anchor="middle" font-size="9" fill="white" font-weight="600">EVENING RUNTIME</text>
+      <text x="15" y="103" font-size="8" fill="#666">19:00</text>
+      <text x="575" y="103" font-size="8" fill="#666">24th 08:30</text>
+      <line x1="310" y="85" x2="310" y="113" stroke="#1565c0" stroke-width="2" stroke-dasharray="4,3"/>
+      <text x="312" y="80" font-size="8" fill="#1565c0" font-weight="600">midnight</text>
+
+      <!-- UTC conversion -->
+      <text x="10" y="138" font-size="9" fill="#666">UTC = IST minus 5 hours 30 minutes · Example: 19:00 IST = 13:30 UTC</text>
+    </svg>
+  </div>
+
+  <div class="warn-box">
+    <strong>Important:</strong> The blue info banner in the app shows the exact IST and UTC window sent to the API. Always verify this matches your selected shift before interpreting data.
+  </div>
+</div>
+
+<!-- PAGE 4: APIs -->
+<div class="page content">
+  <h2>4. API Endpoints</h2>
+  <table>
+    <tr><th>#</th><th>Endpoint</th><th>Method</th><th>Purpose</th></tr>
+    <tr><td>1</td><td>/auth/login</td><td>POST</td><td>Login — returns access_token</td></tr>
+    <tr><td>2</td><td>/auth/me</td><td>GET</td><td>Current user profile</td></tr>
+    <tr><td>3</td><td>/auth/logout</td><td>POST</td><td>Logout</td></tr>
+    <tr><td>4</td><td>/core/assets/tree</td><td>GET</td><td>Machine / line hierarchy</td></tr>
+    <tr><td>5</td><td>/core/shifts</td><td>GET</td><td>Shift definitions</td></tr>
+    <tr><td>6</td><td>/analytics-query/machine-intervals</td><td>POST</td><td>Timeline chart + table data</td></tr>
+    <tr><td>7</td><td>/analytics-query</td><td>POST</td><td>Cycle time metrics</td></tr>
+  </table>
+
+  <h2>5. API Data → UI Mapping</h2>
+  <div class="diagram-box">
+    <div class="diagram-title">machine-intervals Response → Chart &amp; Table</div>
+    <svg viewBox="0 0 620 220" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="10" width="180" height="200" rx="8" fill="#263238"/>
+      <text x="100" y="32" text-anchor="middle" font-size="10" fill="#80cbc4" font-weight="700">API Response</text>
+      <text x="20" y="55" font-size="9" fill="#eceff1">runtimes[]</text>
+      <text x="20" y="72" font-size="9" fill="#eceff1">downtimes[]</text>
+      <text x="20" y="89" font-size="9" fill="#eceff1">stoppages[]</text>
+      <text x="20" y="106" font-size="9" fill="#eceff1">produce_counts[]</text>
+      <text x="20" y="123" font-size="9" fill="#eceff1">produces[]</text>
+      <text x="20" y="150" font-size="8" fill="#78909c">All timestamps UTC</text>
+      <text x="20" y="165" font-size="8" fill="#78909c">Convert → IST for UI</text>
+
+      <line x1="195" y1="60" x2="240" y2="60" stroke="#00897b" stroke-width="2" marker-end="url(#a2)"/>
+      <line x1="195" y1="80" x2="240" y2="80" stroke="#ff7043" stroke-width="2"/>
+      <line x1="195" y1="100" x2="240" y2="100" stroke="#8e24aa" stroke-width="2"/>
+      <line x1="195" y1="115" x2="240" y2="130" stroke="#1565c0" stroke-width="2"/>
+      <line x1="195" y1="130" x2="240" y2="170" stroke="#1565c0" stroke-width="2"/>
+
+      <rect x="245" y="30" width="160" height="80" rx="8" fill="#e0f2f1" stroke="#00897b"/>
+      <text x="325" y="50" text-anchor="middle" font-size="10" font-weight="700" fill="#004d40">Timeline Chart</text>
+      <rect x="260" y="58" width="30" height="12" rx="2" fill="#00897b"/>
+      <text x="298" y="68" font-size="8" fill="#333">Runtime band</text>
+      <rect x="260" y="74" width="30" height="12" rx="2" fill="#ff7043"/>
+      <text x="298" y="84" font-size="8" fill="#333">Downtime band</text>
+      <circle cx="270" cy="98" r="4" fill="#1565c0"/>
+      <text x="298" y="101" font-size="8" fill="#333">PASS marker</text>
+
+      <rect x="245" y="130" width="160" height="80" rx="8" fill="#e3f2fd" stroke="#1565c0"/>
+      <text x="325" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#0d47a1">Hourly Table</text>
+      <text x="260" y="168" font-size="8" fill="#333">Total · Pass · Fail</text>
+      <text x="260" y="182" font-size="8" fill="#333">Runtime · Downtime mins</text>
+      <text x="260" y="196" font-size="8" fill="#333">Cycle Time (API #7)</text>
+
+      <rect x="430" y="30" width="180" height="180" rx="8" fill="#fff8e1" stroke="#ffa000"/>
+      <text x="520" y="50" text-anchor="middle" font-size="10" font-weight="700" fill="#e65100">analytics-query</text>
+      <text x="445" y="72" font-size="9" fill="#333">ideal_cycle_time_seconds</text>
+      <text x="445" y="88" font-size="9" fill="#333">actual_cycle_time_seconds</text>
+      <line x1="410" y1="80" x2="430" y2="80" stroke="#ffa000" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="445" y="115" font-size="8" fill="#666">distribution: "hourly"</text>
+      <text x="445" y="130" font-size="8" fill="#666">Same entity_scope</text>
+      <text x="445" y="145" font-size="8" fill="#666">Same time_range</text>
+      <text x="520" y="175" text-anchor="middle" font-size="8" fill="#666">→ Ideal / Actual</text>
+      <text x="520" y="190" text-anchor="middle" font-size="8" fill="#666">Cycle Time rows</text>
+
+      <defs>
+        <marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#00897b"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<!-- PAGE 5: CHART -->
+<div class="page content">
+  <h2>6. Timeline Chart Design</h2>
+  <div class="legend-row">
+    <div class="legend-item"><div class="legend-swatch" style="background:#00897b"></div>Runtime</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#afb42b"></div>Unplanned Production</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#ff7043"></div>Unknown Downtime</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#8e24aa"></div>Stoppage</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#1565c0;border-radius:50%"></div>PASS</div>
+    <div class="legend-item"><span style="color:#d32f2f;font-weight:800">×</span> FAIL</div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Chart Layout (Two Lanes)</div>
+    <svg viewBox="0 0 620 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Segment lane -->
+      <rect x="10" y="10" width="600" height="70" rx="6" fill="#f5f5f5" stroke="#ddd"/>
+      <text x="15" y="24" font-size="8" fill="#757575" font-weight="600">MACHINE STATE</text>
+      <rect x="20" y="32" width="120" height="40" fill="#00897b" opacity="0.9" rx="2"/>
+      <text x="80" y="56" text-anchor="middle" font-size="8" fill="white" font-weight="600">RUNTIME</text>
+      <rect x="145" y="32" width="40" height="40" fill="#ff7043" opacity="0.9" rx="2"/>
+      <text x="165" y="56" text-anchor="middle" font-size="7" fill="white">DT</text>
+      <rect x="190" y="32" width="200" height="40" fill="#00897b" opacity="0.9" rx="2"/>
+      <text x="290" y="56" text-anchor="middle" font-size="8" fill="white" font-weight="600">RUNTIME</text>
+      <rect x="395" y="32" width="30" height="40" fill="#afb42b" opacity="0.9" rx="2"/>
+      <rect x="430" y="32" width="170" height="40" fill="#00897b" opacity="0.9" rx="2"/>
+
+      <!-- Marker lane -->
+      <rect x="10" y="88" width="600" height="45" rx="6" fill="#ffffff" stroke="#ddd"/>
+      <text x="15" y="102" font-size="8" fill="#757575" font-weight="600">PRODUCTION (PASS / FAIL)</text>
+      <circle cx="80" cy="118" r="5" fill="#1565c0" stroke="#fff" stroke-width="1"/>
+      <circle cx="100" cy="118" r="5" fill="#1565c0" stroke="#fff" stroke-width="1"/>
+      <circle cx="120" cy="118" r="5" fill="#1565c0" stroke="#fff" stroke-width="1"/>
+      <line x1="200" y1="113" x2="210" y2="123" stroke="#d32f2f" stroke-width="2"/>
+      <line x1="210" y1="113" x2="200" y2="123" stroke="#d32f2f" stroke-width="2"/>
+      <circle cx="300" cy="118" r="5" fill="#1565c0"/>
+      <circle cx="320" cy="118" r="5" fill="#1565c0"/>
+      <circle cx="450" cy="118" r="5" fill="#1565c0"/>
+      <circle cx="470" cy="118" r="5" fill="#1565c0"/>
+
+      <!-- Axis -->
+      <rect x="10" y="140" width="600" height="30" rx="6" fill="#fafafa" stroke="#ddd"/>
+      <text x="20" y="158" font-size="8" fill="#616161">08:30</text>
+      <text x="150" y="158" font-size="8" fill="#616161">10:00</text>
+      <text x="300" y="158" font-size="8" fill="#616161">12:00</text>
+      <text x="450" y="158" font-size="8" fill="#616161">16:00</text>
+      <text x="570" y="158" font-size="8" fill="#616161">19:00</text>
+      <text x="310" y="172" text-anchor="middle" font-size="8" fill="#999">Time (IST)</text>
+    </svg>
+  </div>
+
+  <h3>Chart Interactions</h3>
+  <table>
+    <tr><th>Action</th><th>Result</th></tr>
+    <tr><td>Drag on chart</td><td>Zoom into selected time range</td></tr>
+    <tr><td>Double-click</td><td>Reset zoom to full shift</td></tr>
+    <tr><td>Reset Zoom button</td><td>Reset zoom (appears when zoomed)</td></tr>
+    <tr><td>Hover marker</td><td>Tooltip: timestamp (IST) + PASS/FAIL</td></tr>
+    <tr><td>Toggle "Show individual produces"</td><td>OFF = hourly coarse markers · ON = 10k–20k exact markers</td></tr>
+  </table>
+
+  <h3>Performance</h3>
+  <ul>
+    <li>HTML Canvas rendering (not SVG) for 10,000–20,000 markers</li>
+    <li>Precomputed marker positions in typed arrays</li>
+    <li>Pixel-bin downsampling when zoomed out — <strong>FAIL markers never dropped</strong></li>
+  </ul>
+</div>
+
+<!-- PAGE 6: AUTH + TABLE + RUN -->
+<div class="page content">
+  <h2>7. Authentication Flow</h2>
+  <div class="flow-step"><div class="flow-num">1</div>User enters credentials → POST /auth/login</div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step"><div class="flow-num">2</div>Store access_token in localStorage + Redux</div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step"><div class="flow-num">3</div>GET /auth/me → save user profile → navigate to /dashboard</div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step"><div class="flow-num">4</div>Page refresh → read token → GET /auth/me → stay logged in</div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step"><div class="flow-num">5</div>Any 401 → clear token → redirect to /login</div>
+
+  <h2>8. Hourly Summary Table</h2>
+  <table>
+    <tr><th>Row</th><th>Source</th><th>Description</th></tr>
+    <tr><td>Total</td><td>produce_counts</td><td>ok_count + ng_count per hour</td></tr>
+    <tr><td>Pass</td><td>produce_counts</td><td>ok_count summed across part models</td></tr>
+    <tr><td>Fail</td><td>produce_counts</td><td>ng_count summed across part models</td></tr>
+    <tr><td>Runtime</td><td>runtimes (planned)</td><td>Minutes of planned runtime in hour</td></tr>
+    <tr><td>Unplanned Production</td><td>runtimes</td><td>Minutes of unplanned production</td></tr>
+    <tr><td>Stoppage</td><td>stoppages</td><td>Minutes of stoppage</td></tr>
+    <tr><td>Unknown Downtime</td><td>downtimes</td><td>Minutes of unknown downtime</td></tr>
+    <tr><td>Ideal Cycle Time</td><td>analytics-query API</td><td>ideal_cycle_time_seconds</td></tr>
+    <tr><td>Actual Cycle Time</td><td>analytics-query API</td><td>actual_cycle_time_seconds</td></tr>
+  </table>
+
+  <h2>9. How to Run</h2>
+  <div class="code-block">npm install
+cp .env.example .env
+npm run dev
+
+# Open http://localhost:5173
+# Login: analytics_user / dashboard123
+# Test date: 23 June 2026</div>
+
+  <h2>10. Project Structure</h2>
+  <div class="code-block">src/
+├── store/          Redux + RTK Query (auth, filters, APIs)
+├── utils/          timezone, shiftWindow, chartData, hourlyTable
+├── components/
+│   ├── chart/      TimelineChart (Canvas)
+│   ├── table/      HourlySummaryTable
+│   └── filters/    FilterBar
+└── pages/          LoginPage, DashboardPage</div>
+
+  <div class="footer-note">
+    Timeline Dashboard — Noviga Frontend Assignment · Generated Project Guide
+  </div>
+</div>
+
+</body>
+</html>
