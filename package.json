@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-pdf": "node scripts/generate-pdf-chrome.mjs"
+    "generate-pdf": "node scripts/generate-pdf-chrome.mjs",
+    "generate-pdf:client": "node scripts/generate-pdf-chrome.mjs client"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

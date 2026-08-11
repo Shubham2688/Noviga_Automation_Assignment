@@ -60,8 +60,10 @@ See [NOTES.md](./NOTES.md) for detailed design decisions.
 
 | File | Description |
 |------|-------------|
-| [docs/Timeline-Dashboard-Project-Guide.pdf](./docs/Timeline-Dashboard-Project-Guide.pdf) | **Visual project guide (PDF)** — architecture, shifts, APIs, chart |
-| [docs/project-guide.html](./docs/project-guide.html) | HTML source (open in browser) |
-| [PROJECT_GUIDE.md](./PROJECT_GUIDE.md) | Markdown reference |
+| [docs/Production-Timeline-User-Guide.pdf](./docs/Production-Timeline-User-Guide.pdf) | **Client user guide (PDF)** — how to use the app (shareable) |
+| [docs/Timeline-Dashboard-Project-Guide.pdf](./docs/Timeline-Dashboard-Project-Guide.pdf) | Technical project guide (PDF) — architecture, shifts, APIs |
+| [docs/client-user-guide.html](./docs/client-user-guide.html) | Client guide HTML source |
+| [docs/project-guide.html](./docs/project-guide.html) | Technical guide HTML source |
+| [PROJECT_GUIDE.md](./PROJECT_GUIDE.md) | Markdown technical reference |
 
-To regenerate the PDF: `npm run generate-pdf` (requires Chrome)
+Regenerate PDFs (requires Chrome): `npm run generate-pdf:client` or `npm run generate-pdf`

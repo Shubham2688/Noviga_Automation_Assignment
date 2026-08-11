@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Production Timeline — Application User Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: #1c2b2a;
+      line-height: 1.6;
+      background: #fff;
+      font-size: 10.5pt;
+    }
+
+    .page { page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+
+    .cover {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.12) 0%, transparent 50%),
+        linear-gradient(145deg, #0d3d38 0%, #1a6b5f 45%, #2d9b88 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 64px 56px;
+    }
+    .cover .eyebrow {
+      font-size: 11pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+    .cover h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 40pt;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      max-width: 14ch;
+    }
+    .cover .subtitle {
+      font-size: 14pt;
+      opacity: 0.9;
+      max-width: 36ch;
+      margin-bottom: 48px;
+      font-weight: 400;
+    }
+    .cover .meta {
+      font-size: 10.5pt;
+      opacity: 0.78;
+      line-height: 1.9;
+    }
+    .cover .badge {
+      display: inline-block;
+      margin-top: 36px;
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 9.5pt;
+      font-weight: 500;
+    }
+
+    .content { padding: 42px 48px; }
+
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 18pt;
+      color: #0d3d38;
+      border-bottom: 2.5px solid #2d9b88;
+      padding-bottom: 8px;
+      margin: 0 0 18px;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-size: 12pt;
+      color: #1a6b5f;
+      margin: 20px 0 10px;
+      page-break-after: avoid;
+    }
+    p { margin-bottom: 10px; color: #2a3a39; }
+    ul, ol { margin: 8px 0 14px 22px; }
+    li { margin-bottom: 6px; }
+
+    .toc ol { margin-left: 24px; }
+    .toc li { margin-bottom: 8px; }
+    .toc a { color: #1a6b5f; text-decoration: none; font-weight: 500; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 16px 0 20px;
+    }
+    .card-grid.three { grid-template-columns: repeat(3, 1fr); }
+    .card {
+      border: 1px solid #d7e5e2;
+      border-radius: 10px;
+      padding: 14px 16px;
+      background: #f4faf8;
+    }
+    .card strong { display: block; color: #0d3d38; font-size: 10.5pt; margin-bottom: 4px; }
+    .card span { font-size: 9.5pt; color: #4a5f5c; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 18px;
+      font-size: 9.5pt;
+    }
+    th, td {
+      border: 1px solid #d7e5e2;
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #0d3d38;
+      color: #fff;
+      font-weight: 600;
+    }
+    tr:nth-child(even) td { background: #f7fbfa; }
+
+    .swatch {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: -1px;
+    }
+    .callout {
+      background: #e8f5f2;
+      border-left: 4px solid #2d9b88;
+      padding: 12px 14px;
+      margin: 14px 0;
+      border-radius: 0 8px 8px 0;
+      font-size: 9.5pt;
+    }
+    .callout.warn {
+      background: #fff8e8;
+      border-left-color: #e6a817;
+    }
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      margin: 12px 0 18px 0;
+    }
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 10px 12px 10px 48px;
+      margin-bottom: 8px;
+      background: #f4faf8;
+      border-radius: 8px;
+      border: 1px solid #d7e5e2;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      width: 24px;
+      height: 24px;
+      background: #1a6b5f;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 10pt;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 24px;
+      text-align: center;
+    }
+    .footer-note {
+      margin-top: 28px;
+      padding-top: 14px;
+      border-top: 1px solid #d7e5e2;
+      font-size: 9pt;
+      color: #6a7c79;
+    }
+    code {
+      font-family: ui-monospace, Consolas, monospace;
+      background: #eef5f3;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 9pt;
+    }
+    .chart-box {
+      border: 1px solid #d7e5e2;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 14px 0 18px;
+      font-size: 9pt;
+    }
+    .chart-box .row {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid #e8f0ee;
+    }
+    .chart-box .row:last-child { border-bottom: none; background: #fafafa; }
+    .chart-box .label { width: 140px; font-weight: 600; color: #0d3d38; }
+    .chart-box .bars { flex: 1; display: flex; gap: 4px; height: 22px; }
+    .bar { flex: 1; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- COVER -->
+  <section class="page cover">
+    <div class="eyebrow">Noviga · Client Documentation</div>
+    <h1>Production Timeline</h1>
+    <p class="subtitle">Application User Guide — how to sign in, filter production data, read the timeline chart, and use the hourly summary table.</p>
+    <div class="meta">
+      Product: Production Timeline Dashboard<br />
+      Audience: Operators, supervisors &amp; client stakeholders<br />
+      Version: 1.0<br />
+      Timezone shown in UI: IST (Asia/Kolkata, UTC+05:30)
+    </div>
+    <div class="badge">Confidential — for client review &amp; handover</div>
+  </section>
+
+  <!-- TOC -->
+  <section class="page content toc">
+    <h2>Contents</h2>
+    <ol>
+      <li>What the application does</li>
+      <li>Getting started — sign in</li>
+      <li>Dashboard at a glance</li>
+      <li>Using the filter bar</li>
+      <li>Reading the timeline chart</li>
+      <li>Hourly production &amp; downtime summary</li>
+      <li>Common situations &amp; messages</li>
+      <li>Demo credentials &amp; sample data</li>
+      <li>Quick reference checklist</li>
+    </ol>
+
+    <div class="callout" style="margin-top: 28px;">
+      <strong>Purpose of this guide.</strong> This document is written for end users and client stakeholders.
+      It explains how to use the live application — not how the software is engineered.
+    </div>
+
+    <div class="footer-note">
+      Production Timeline · Application User Guide · v1.0
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section class="page content">
+    <h2>1. What the application does</h2>
+    <p>
+      <strong>Production Timeline</strong> is a web dashboard for reviewing one machine (or line), for one shift, on one date.
+      It combines a visual timeline of machine state and production with an hourly numeric summary.
+    </p>
+
+    <div class="card-grid three">
+      <div class="card">
+        <strong>Secure access</strong>
+        <span>Sign in with your account. Your session is restored if you refresh the page.</span>
+      </div>
+      <div class="card">
+        <strong>Timeline chart</strong>
+        <span>See runtime, downtime, stoppages, and PASS/FAIL production over the shift.</span>
+      </div>
+      <div class="card">
+        <strong>Hourly table</strong>
+        <span>Nine metrics broken down by clock hour — totals, minutes, and cycle times.</span>
+      </div>
+    </div>
+
+    <h3>What you can do</h3>
+    <ul>
+      <li>Choose a machine / line, shift, and date</li>
+      <li>Switch between hourly overview and individual produce markers</li>
+      <li>Zoom into a time range by dragging on the chart</li>
+      <li>Hover markers for timestamp and PASS/FAIL detail</li>
+      <li>Refresh data without leaving the page</li>
+      <li>Sign out securely from the header menu</li>
+    </ul>
+
+    <div class="callout warn">
+      <strong>Scope note.</strong> This release focuses on a single machine + shift + date view.
+      CSV/PDF export, auto-refresh polling, and multi-machine comparison are not included.
+    </div>
+
+    <div class="footer-note">Production Timeline · Application User Guide · v1.0</div>
+  </section>
+
+  <!-- 2 -->
+  <section class="page content">
+    <h2>2. Getting started — sign in</h2>
+
+    <ol class="steps">
+      <li>Open the application URL in a modern browser (Chrome, Edge, or Firefox recommended).</li>
+      <li>On the login screen, enter your <strong>username</strong> and <strong>password</strong>.</li>
+      <li>Click <strong>Sign in</strong>. On success you are taken to the Production Timeline dashboard.</li>
+      <li>To leave the app, click your name in the top-right → <strong>Logout</strong>.</li>
+    </ol>
+
+    <h3>Session behaviour</h3>
+    <table>
+      <thead>
+        <tr><th>Situation</th><th>What happens</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>You refresh the browser</td>
+          <td>You stay signed in (session is restored and validated).</td>
+        </tr>
+        <tr>
+          <td>Session expires or token is rejected</td>
+          <td>You are returned to the login page with a clear message.</td>
+        </tr>
+        <tr>
+          <td>Wrong username or password</td>
+          <td>Message: <em>Incorrect username or password. Please try again.</em></td>
+        </tr>
+        <tr>
+          <td>Empty fields</td>
+          <td>Message: <em>Username and password are required.</em></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-note">Production Timeline · Application User Guide · v1.0</div>
+  </section>
+
+  <!-- 3 -->
+  <section class="page content">
+    <h2>3. Dashboard at a glance</h2>
+    <p>After sign-in you land on the <strong>Production Timeline</strong> screen. Top to bottom:</p>
+
+    <table>
+      <thead>
+        <tr><th>Area</th><th>What it shows</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Header bar</strong></td>
+          <td>App title, your name, and Logout.</td>
+        </tr>
+        <tr>
+          <td><strong>Filter bar</strong></td>
+          <td>Machine / Line, Shift, Date, “Show individual produces” toggle, Refresh.</td>
+        </tr>
+        <tr>
+          <td><strong>Query window banner</strong></td>
+          <td>Exact IST time window used for the selected date + shift (and UTC range for reference).</td>
+        </tr>
+        <tr>
+          <td><strong>Production History chart</strong></td>
+          <td>Colour bands for machine state + production markers along the shift timeline.</td>
+        </tr>
+        <tr>
+          <td><strong>Hourly summary table</strong></td>
+          <td>Nine metric rows, one column per clock hour in the shift.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      Changing any filter (machine, shift, date, or toggle) automatically reloads the chart and table for that selection.
+    </div>
+
+    <div class="footer-note">Production Timeline · Application User Guide · v1.0</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="page content">
+    <h2>4. Using the filter bar</h2>
+
+    <h3>Machine / Line</h3>
+    <p>
+      Pick the asset you want to inspect. The list is hierarchical (indented lines and machines).
+      By default the first available machine-level asset is selected.
+    </p>
+
+    <h3>Shift</h3>
+    <p>
+      Shifts come from the backend (they are not hard-coded). Labels show the IST start–end window.
+      Overnight shifts are labelled with <strong>next day</strong> so the calendar date you pick is unambiguous.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Example label</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>08:30 – 19:00</td>
+          <td>Same calendar day, day shift window.</td>
+        </tr>
+        <tr>
+          <td>19:00 – 08:30 next day</td>
+          <td>Starts on the selected date at 19:00 IST; ends the following morning at 08:30 IST.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Date</h3>
+    <p>
+      Choose the production date in IST. For the current demo environment, available sample data is limited to
+      <strong>22–25 June 2026</strong>.
+    </p>
+
+    <h3>Show individual produces</h3>
+    <table>
+      <thead>
+        <tr><th>Toggle</th><th>Chart behaviour</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>OFF</strong> (default overview)</td>
+          <td>One summary marker per shift hour with hourly pass counts and a cumulative production line — easier for a quick scan.</td>
+        </tr>
+        <tr>
+          <td><strong>ON</strong> (detail)</td>
+          <td>Every produce event as its own marker: blue = PASS, red × = FAIL, at the real timestamp.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Refresh</h3>
+    <p>Click the circular refresh icon to reload the latest intervals and cycle-time data for the current filters.</p>
+
+    <div class="footer-note">Production Timeline · Application User Guide · v1.0</div>
+  </section>
+
+  <!-- 5 -->
+  <section class="page content">
+    <h2>5. Reading the timeline chart</h2>
+    <p>The chart is titled <strong>Production History</strong>. Colour bands show machine state; markers show production.</p>
+
+    <h3>Machine state colours</h3>
+    <table>
+      <thead>
+        <tr><th>Colour</th><th>State</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="swatch" style="background:#2e7d32;"></span> Teal / green</td>
+          <td>Runtime</td>
+          <td>Planned productive running time.</td>
+        </tr>
+        <tr>
+          <td><span class="swatch" style="background:#827717;"></span> Olive</td>
+          <td>Unplanned Production</td>
+          <td>Production outside the planned runtime classification.</td>
+        </tr>
+        <tr>
+          <td><span class="swatch" style="background:#ef6c00;"></span> Orange</td>
+          <td>Unknown Downtime</td>
+          <td>Downtime not yet classified.</td>
+        </tr>
+        <tr>
+          <td><span class="swatch" style="background:#6a1b9a;"></span> Purple</td>
+          <td>Stoppage</td>
+          <td>Stoppage interval.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Production markers</h3>
+    <ul>
+      <li><strong>Blue dot</strong> — PASS (good part)</li>
+      <li><strong>Red circle with ×</strong> — FAIL (NG part)</li>
+    </ul>
+
+    <div class="chart-box">
+      <div class="row">
+        <div class="label">Machine state</div>
+        <div class="bars">
+          <div class="bar" style="background:#2e7d32; flex:3;"></div>
+          <div class="bar" style="background:#ef6c00; flex:1;"></div>
+          <div class="bar" style="background:#2e7d32; flex:2;"></div>
+          <div class="bar" style="background:#6a1b9a; flex:1;"></div>
+          <div class="bar" style="background:#827717; flex:1.5;"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Time axis (IST)</div>
+        <div>Shift start → hour ticks → shift end</div>
+      </div>
+    </div>
+
+    <h3>Interactions</h3>
+    <table>
+      <thead>
+        <tr><th>Action</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Drag horizontally on the chart</td><td>Zoom into that time range.</td></tr>
+        <tr><td>Double-click, or use <strong>Reset Zoom</strong></td><td>Return to the full shift window.</td></tr>
+        <tr><td>Hover a marker</td><td>See timestamp and PASS/FAIL detail.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      All times on the chart and in tooltips are shown in <strong>IST</strong>. The backend stores timestamps in UTC; conversion is handled automatically.
+    </div>
+
+    <div class="footer-note">Production Timeline · Application User Guide · v1.0</div>
+  </section>
+
+  <!-- 6 -->
+  <section class="page content">
+    <h2>6. Hourly production &amp; downtime summary</h2>
+    <p>
+      Below the chart, the table <strong>Hourly Production &amp; Downtime Summary</strong> breaks the shift into clock-hour columns.
+      Each row is a metric; each column is one hour overlapping the selected shift.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Row</th><th>What it means</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Total</td><td>Pass + Fail count for that hour.</td></tr>
+        <tr><td>Pass</td><td>Good parts (ok_count).</td></tr>
+        <tr><td>Fail</td><td>NG parts (ng_count).</td></tr>
+        <tr><td>Runtime (min)</td><td>Minutes of planned runtime in the hour.</td></tr>
+        <tr><td>Unplanned Production (min)</td><td>Minutes of unplanned production.</td></tr>
+        <tr><td>Stoppage (min)</td><td>Minutes of stoppage.</td></tr>
+        <tr><td>Unknown Downtime (min)</td><td>Minutes of unclassified downtime.</td></tr>
+        <tr><td>Ideal Cycle Time (s)</td><td>Target cycle time for the hour.</td></tr>
+        <tr><td>Actual Cycle Time (s)</td><td>Measured cycle time for the hour.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>In-progress shifts.</strong> For hours that have not occurred yet, cells are left blank (not filled with zeros) so the table does not look like “no production” when the hour simply has not started.
+    </div>
+
+    <div class="footer-note">Production Timeline · Application User Guide · v1.0</div>
+  </section>
+
+  <!-- 7 -->
+  <section class="page content">
+    <h2>7. Common situations &amp; messages</h2>
+    <p>The application uses plain-language messages (no raw HTTP status codes in the UI).</p>
+
+    <table>
+      <thead>
+        <tr><th>What you see</th><th>What to do</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Loading skeletons / busy chart</td>
+          <td>Wait for the request to finish. Large individual-produce views may take a moment.</td>
+        </tr>
+        <tr>
+          <td>Empty chart / no data</td>
+          <td>Try another date (22–25 Jun 2026 in demo), machine, or shift. Check the blue query-window banner.</td>
+        </tr>
+        <tr>
+          <td>“We could not find data for this selection…”</td>
+          <td>Change date, machine, or shift, then retry.</td>
+        </tr>
+        <tr>
+          <td>“Your session has expired…”</td>
+          <td>Sign in again.</td>
+        </tr>
+        <tr>
+          <td>“Unable to reach the server…”</td>
+          <td>Check network connectivity and try Refresh.</td>
+        </tr>
+        <tr>
+          <td>“Something went wrong on our side…”</td>
+          <td>Use the <strong>Retry</strong> button on the dashboard error panel.</td>
+        </tr>
+        <tr>
+          <td>Machine or shift list failed to load</td>
+          <td>Refresh the page. If it persists, contact your administrator.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-note">Production Timeline · Application User Guide · v1.0</div>
+  </section>
+
+  <!-- 8 -->
+  <section class="page content">
+    <h2>8. Demo credentials &amp; sample data</h2>
+    <p>For evaluation of the current connected development backend:</p>
+
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Username</td><td><code>analytics_user</code></td></tr>
+        <tr><td>Password</td><td><code>dashboard123</code></td></tr>
+        <tr><td>Dates with sample data</td><td>22, 23, 24, and 25 June 2026</td></tr>
+        <tr><td>Suggested starting date</td><td>23 June 2026</td></tr>
+        <tr><td>UI timezone</td><td>IST (Asia/Kolkata)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      Demo credentials are for the shared evaluation environment only. Production deployments should use organisation-issued accounts and must not reuse these values.
+    </div>
+
+    <h3>Suggested walkthrough for a client demo</h3>
+    <ol class="steps">
+      <li>Sign in with the demo account.</li>
+      <li>Select an AOI (or other machine-level) asset, a day shift, and date <strong>23 June 2026</strong>.</li>
+      <li>Review the colour bands and hourly table with the toggle <strong>OFF</strong>.</li>
+      <li>Turn <strong>Show individual produces</strong> ON and hover a few PASS/FAIL markers.</li>
+      <li>Drag to zoom a busy hour, then reset zoom.</li>
+      <li>Switch to an overnight shift labelled “next day” and confirm the query-window banner.</li>
+    </ol>
+
+    <div class="footer-note">Production Timeline · Application User Guide · v1.0</div>
+  </section>
+
+  <!-- 9 -->
+  <section class="page content">
+    <h2>9. Quick reference checklist</h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <strong>Before you start</strong>
+        <span>Browser ready · credentials available · know which machine and shift to inspect.</span>
+      </div>
+      <div class="card">
+        <strong>Pick the window</strong>
+        <span>Machine / Line → Shift → Date. Confirm the blue IST query window.</span>
+      </div>
+      <div class="card">
+        <strong>Overview vs detail</strong>
+        <span>Toggle OFF for hourly overview; ON for every produce marker.</span>
+      </div>
+      <div class="card">
+        <strong>Explore time</strong>
+        <span>Drag to zoom · hover for detail · Reset Zoom to go back.</span>
+      </div>
+      <div class="card">
+        <strong>Read the numbers</strong>
+        <span>Use the nine-row hourly table for counts, minutes, and cycle times.</span>
+      </div>
+      <div class="card">
+        <strong>When stuck</strong>
+        <span>Refresh · Retry · change date (22–25 Jun 2026 in demo) · sign in again if session expired.</span>
+      </div>
+    </div>
+
+    <h3>Document control</h3>
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Detail</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Document title</td><td>Production Timeline — Application User Guide</td></tr>
+        <tr><td>Version</td><td>1.0</td></tr>
+        <tr><td>Based on</td><td>Noviga Timeline Dashboard frontend (React application)</td></tr>
+        <tr><td>Related technical notes</td><td>PROJECT_GUIDE.md / NOTES.md (engineering reference, not required for end users)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout" style="margin-top: 24px;">
+      Thank you for reviewing Production Timeline. For environment URLs, account provisioning, or production rollout questions, contact your Noviga project contact.
+    </div>
+
+    <div class="footer-note">
+      End of guide · Production Timeline · Application User Guide · v1.0 · Shareable client PDF
+    </div>
+  </section>
+
+</body>
+</html>

@@ -4,8 +4,20 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..')
-const html = path.join(root, 'docs', 'project-guide.html')
-const pdf = path.join(root, 'docs', 'Timeline-Dashboard-Project-Guide.pdf')
+const target = process.argv[2] === 'client' ? 'client' : 'project'
+
+const targets = {
+  project: {
+    html: path.join(root, 'docs', 'project-guide.html'),
+    pdf: path.join(root, 'docs', 'Timeline-Dashboard-Project-Guide.pdf'),
+  },
+  client: {
+    html: path.join(root, 'docs', 'client-user-guide.html'),
+    pdf: path.join(root, 'docs', 'Production-Timeline-User-Guide.pdf'),
+  },
+}
+
+const { html, pdf } = targets[target]
 
 const chromePaths = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -23,7 +35,7 @@ const browser = chromePaths.find((p) => {
 })
 
 if (!browser) {
-  console.error('Chrome or Edge not found. Open docs/project-guide.html in browser → Print → Save as PDF')
+  console.error(`Chrome or Edge not found. Open ${html} in a browser → Print → Save as PDF`)
   process.exit(1)
 }
 
